@@ -22,6 +22,7 @@ class TreeChart {
             strokeWidth: 3,
             dropShadowId: null,
             initialZoom: 1,
+            dblclickZoomDisabled: false, // Disabled zoom on double click. 
             onNodeClick: d => d,
         };
 
@@ -215,6 +216,9 @@ class TreeChart {
             .attr('cursor', 'move')
             .style('background-color', attrs.backgroundColor);
         attrs.svg = svg;
+        
+        // Disable the double-click behavior. Enabled by default
+        const svgDiabledZoom = attrs.dblclickZoomDisabled ? svg.on('dblclick.zoom', null) : null;
 
         //Add container g element
         const chart = svg
