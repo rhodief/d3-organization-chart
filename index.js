@@ -23,6 +23,7 @@ class TreeChart {
             dropShadowId: null,
             initialZoom: 1,
             dblclickZoomDisabled: false, // Disabled zoom on double click. 
+            clickChildrenButtonState: false, // Store onButtonClick state to prevent unexpected behavior on double click.
             onNodeClick: d => d,
         };
 
@@ -1011,7 +1012,10 @@ class TreeChart {
 
     // Toggle children on click.
     onButtonClick(d) {
-
+        const attrs = this.getChartState();
+        if (attrs.clickChildrenButtonState) {
+            return;
+        }
         // If childrens are expanded
         if (d.children) {
 
@@ -1034,7 +1038,9 @@ class TreeChart {
         }
 
         // Redraw Graph 
+        attrs.clickChildrenButtonState = true;
         this.update(d);
+        setTimeout(() => attrs.clickChildrenButtonState = false, attrs.duration);
     }
 
     // This function changes `expanded` property to descendants

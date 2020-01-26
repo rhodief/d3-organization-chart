@@ -5,7 +5,9 @@
 ![](https://user-images.githubusercontent.com/6873202/57747856-5c078e00-76e8-11e9-82fe-73aa09ff42dd.gif)
 
 # Notes
-1. *dblclickZoomDisabled*: disable zoom on double click (true). Default value is false.    
+1. *dblclickZoomDisabled*: API to disable zoom on double click (true). Default value is false. 
+
+2. *clickChildrenButtonState*: Store onButtonClick state to prevent unexpected behavior on double click
 
 
 Org chart built with d3 v5
