@@ -9,6 +9,8 @@
 
 2. *clickChildrenButtonState*: Store onButtonClick state to prevent unexpected behavior on double click
 
+3. *descendantsOptions(options)*: To show or not the number of subordinates and direct; To change respective labels. Options are: {showSubordinatesNum: bool (default true), showDirectNum: bool (default true), subordinatesLabel: string (default 'Subordinates'), directLabel: string (default 'Direct')} 
+
 
 Org chart built with d3 v5
 

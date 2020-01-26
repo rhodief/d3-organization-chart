@@ -22,6 +22,7 @@ class TreeChart {
             strokeWidth: 3,
             dropShadowId: null,
             initialZoom: 1,
+            descendantsOptions: {showSubordinatesNum: true, showDirectNum: true, subordinatesLabel: 'Subordinates', directLabel: 'Direct'},
             dblclickZoomDisabled: false, // Disabled zoom on double click. 
             clickChildrenButtonState: false, // Store onButtonClick state to prevent unexpected behavior on double click.
             onNodeClick: d => d,
@@ -662,46 +663,52 @@ class TreeChart {
             }) => height / 2 - data.nodeIcon.size - 5)
 
         // Add total descendants text
-        nodeEnter
-            .patternify({
-                tag: 'text',
-                selector: 'node-icon-text-total',
-                data: d => [d]
-            })
-            .text('test')
-            .attr('x', ({
-                width
-            }) => -width / 2 + 7)
-            .attr('y', ({
-                height,
-                data
-            }) => height / 2 - data.nodeIcon.size - 5)
-            .text(({
-                data
-            }) => `${data.totalSubordinates} Subordinates`)
-            .attr('fill', attrs.nodeTextFill)
-            .attr('font-weight', 'bold')
+        if (attrs.descendantsOptions.showSubordinatesNum !== false) {
+            nodeEnter
+                .patternify({
+                    tag: 'text',
+                    selector: 'node-icon-text-total',
+                    data: d => [d]
+                })
+                .text('test')
+                .attr('x', ({
+                    width
+                }) => -width / 2 + 7)
+                .attr('y', ({
+                    height,
+                    data
+                }) => height / 2 - data.nodeIcon.size - 5)
+                .text(({
+                    data
+                }) => `${data.totalSubordinates} ${attrs.descendantsOptions.subordinatesLabel || 'Subordinates'} `)
+                .attr('fill', attrs.nodeTextFill)
+                .attr('font-weight', 'bold')
+        }
+        
 
         // Add direct descendants text
-        nodeEnter
-            .patternify({
-                tag: 'text',
-                selector: 'node-icon-text-direct',
-                data: d => [d]
-            })
-            .text('test')
-            .attr('x', ({
-                width,
-                data
-            }) => -width / 2 + 10 + data.nodeIcon.size)
-            .attr('y', ({
-                height
-            }) => height / 2 - 10)
-            .text(({
-                data
-            }) => `${data.directSubordinates} Direct `)
-            .attr('fill', attrs.nodeTextFill)
-            .attr('font-weight', 'bold')
+        if (attrs.descendantsOptions.showDirectNum !== false) {
+            nodeEnter
+                .patternify({
+                    tag: 'text',
+                    selector: 'node-icon-text-direct',
+                    data: d => [d]
+                })
+                .text('test')
+                .attr('x', ({
+                    width,
+                    data
+                }) => -width / 2 + 10 + data.nodeIcon.size)
+                .attr('y', ({
+                    height
+                }) => height / 2 - 10)
+                .text(({
+                    data
+                }) => `${data.directSubordinates} ${attrs.descendantsOptions.directLabel || 'Direct'} `)
+                .attr('fill', attrs.nodeTextFill)
+                .attr('font-weight', 'bold')
+        }
+
 
 
         // Defined node images wrapper group
