@@ -1075,6 +1075,51 @@ class TreeChart {
         }
     }
 
+    // Find a Node by Id and highlight it. - Beta...
+    centerNode(nodeId, highlight = true, keyChange = 'backgroundColor', valueChange = 'red') {
+        const attrs = this.getChartState();
+        this.setExpanded(nodeId, true)
+        
+        setTimeout(() => {
+            const target = attrs.allNodes.filter(d => d.id == nodeId)[0];
+            if (highlight) {
+                target[keyChange] = valueChange;
+            }
+            const calc = attrs.calc;
+            const xc = calc.chartWidth;
+            const yc = calc.chartHeight;
+            var new_x = (-target.x0 + (xc / 2));
+            var new_y = (-target.y0 + (yc / 2));
+            
+            const divx = new_x / calc.centerX;
+
+            var corrx = new_x
+
+            if (divx < 1 ) {
+                corrx = new_x + 120;
+            }
+            if (divx > 1) {
+                corrx = new_x - 120
+            }
+
+            attrs.centerG
+                .transition()
+                .duration(500)
+                .attr('transform', ` translate(${0}, ${0}) scale(${attrs.initialZoom})`)
+                .attr('transform', ` translate(${corrx}, ${new_y / 2}) scale(${attrs.initialZoom})`)
+            this.update(attrs.root);
+            
+
+
+        }, attrs.duration)
+        
+        // Rescale container element accordingly
+        //attrs.centerG.attr('transform', ` translate(${calc.centerX}, ${calc.nodeMaxHeight / 2}) scale(${attrs.initialZoom})`)
+        //zoomBehaviours.translate([new_x, new_y]);
+        //zoomBehaviours.scale(1);
+    }
+
+
     // This function can be invoked via chart.setExpanded API, it expands or collapses particular node
     setExpanded(id, expandedFlag) {
         const attrs = this.getChartState();
