@@ -15,7 +15,7 @@ class TreeChart {
             defaultTextFill: '#2C3E50',
             nodeTextFill: 'white',
             defaultFont: 'Helvetica',
-            backgroundColor: '#fafafa',
+            backgroundColor: '#f7f9fa',
             data: null,
             depth: 180,
             duration: 600,
@@ -430,6 +430,7 @@ class TreeChart {
                 let imageCenterTopDistance = 0;
                 let imageCenterLeftDistance = 0;
                 let borderColor = 'steelblue';
+                let nodeTextFill  = 'black';
                 let backgroundColor = 'steelblue';
                 let width = d.data.width;
                 let height = d.data.height;
@@ -463,6 +464,9 @@ class TreeChart {
                 if (d.data.backgroundColor) {
                     backgroundColor = this.rgbaObjToColor(d.data.backgroundColor);
                 }
+                if (d.data.nodeTextFill) {
+                    nodeTextFill = this.rgbaObjToColor(d.data.nodeTextFill);
+                }
                 if (d.data.nodeImage &&
                     d.data.nodeImage.cornerShape.toLowerCase() == "circle") {
                     imageRx = Math.max(imageWidth, imageHeight);
@@ -480,6 +484,7 @@ class TreeChart {
                     imageBorderWidth,
                     borderColor,
                     backgroundColor,
+                    nodeTextFill,
                     imageRx,
                     width,
                     height,
@@ -1011,7 +1016,7 @@ class TreeChart {
             .style('height', ({
                 height
             }) => `${height}px`)
-            .style('color', 'white')
+            .style('color', ({nodeTextFill}) => nodeTextFill)
             .html(({
                 data
             }) => data.template)
