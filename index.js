@@ -15,7 +15,7 @@ class TreeChart {
             defaultTextFill: '#2C3E50',
             nodeTextFill: 'white',
             defaultFont: 'Helvetica',
-            backgroundColor: '#f7f9fa',
+            backgroundColor: '#fafafa',
             data: null,
             depth: 180,
             duration: 600,
