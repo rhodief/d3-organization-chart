@@ -169,6 +169,9 @@ class TreeChart {
         // Get zooming function 
         behaviors.zoom = d3.zoom().on("zoom", d => this.zoomed(d))
 
+        //Store it
+        attrs.behaviors = behaviors;
+
         //****************** ROOT node work ************************
 
         // Convert flat data to hierarchical
@@ -1084,44 +1087,23 @@ class TreeChart {
     centerNode(nodeId, highlight = true, keyChange = 'backgroundColor', valueChange = 'red') {
         const attrs = this.getChartState();
         this.setExpanded(nodeId, true)
+        const target = attrs.allNodes.filter(d => d.id == nodeId)[0];
+        if (highlight) {
+            target[keyChange] = valueChange;
+        }
+        const calc = attrs.calc;
+        const xc = calc.chartWidth;
+        const yc = calc.chartHeight;
+        var new_x = (-target.x + (xc / 2));
+        var new_y = (-target.y + (yc / 2));
+        var t = d3.zoomIdentity.translate(new_x/2, new_y/2).scale(attrs.initialZoom);
         
-        setTimeout(() => {
-            const target = attrs.allNodes.filter(d => d.id == nodeId)[0];
-            if (highlight) {
-                target[keyChange] = valueChange;
-            }
-            const calc = attrs.calc;
-            const xc = calc.chartWidth;
-            const yc = calc.chartHeight;
-            var new_x = (-target.x0 + (xc / 2));
-            var new_y = (-target.y0 + (yc / 2));
-            
-            const divx = new_x / calc.centerX;
-
-            var corrx = new_x
-
-            if (divx < 1 ) {
-                corrx = new_x + 120;
-            }
-            if (divx > 1) {
-                corrx = new_x - 120
-            }
-
-            attrs.centerG
-                .transition()
-                .duration(500)
-                .attr('transform', ` translate(${0}, ${0}) scale(${attrs.initialZoom})`)
-                .attr('transform', ` translate(${corrx}, ${new_y / 2}) scale(${attrs.initialZoom})`)
-            this.update(attrs.root);
-            
-
-
-        }, attrs.duration)
-        
-        // Rescale container element accordingly
-        //attrs.centerG.attr('transform', ` translate(${calc.centerX}, ${calc.nodeMaxHeight / 2}) scale(${attrs.initialZoom})`)
-        //zoomBehaviours.translate([new_x, new_y]);
-        //zoomBehaviours.scale(1);
+        attrs.chart
+            .transition()
+            .duration(500)
+            .attr('transform', t.toString())
+            .on("end", ()=> attrs.svg.call(attrs.zoomBehavior.transform, t))
+        this.update(attrs.root);
     }
 
 
