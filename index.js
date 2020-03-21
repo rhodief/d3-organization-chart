@@ -1102,7 +1102,7 @@ class TreeChart {
             .transition()
             .duration(500)
             .attr('transform', t.toString())
-            .on("end", ()=> attrs.svg.call(attrs.zoomBehavior.transform, t))
+            .on("end", ()=> attrs.svg.call(attrs.behaviors.zoom.transform, t))
         this.update(attrs.root);
     }
 
