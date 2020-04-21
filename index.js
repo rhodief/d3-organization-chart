@@ -479,6 +479,11 @@ class TreeChart {
                     imageRx = Math.min(imageWidth, imageHeight) / 6;
                 }
 
+                // If d.data.template is a function, execute it, it assumes it is a string
+                if (d.data.template instanceof Function) {
+                    d.data.template = d.data.template(d);
+                }
+
                 // Extend node object with calculated properties
                 return Object.assign(d, {
                     imageWidth,
